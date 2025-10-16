@@ -1,0 +1,63 @@
+{
+  "name": "jmattingly-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-channel analytics dashboard with Shopify, Square, and Anyroad integrations",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "seed": "tsx prisma/seed.ts",
+    "db:views": "tsx scripts/create-views.ts",
+    "shopify:backfill": "tsx scripts/shopify-backfill.ts",
+    "square:backfill": "tsx scripts/square-backfill.ts",
+    "anyroad:backfill": "tsx scripts/anyroad-backfill.ts",
+    "reconcile": "tsx scripts/reconcile.ts",
+    "views:create": "tsx scripts/create-views.ts",
+    "views:refresh": "tsx scripts/refresh-views.ts",
+    "type-check": "tsc --noEmit",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.1.1",
+    "@prisma/client": "^5.8.0",
+    "@shopify/shopify-api": "^9.0.0",
+    "@tremor/react": "^3.14.0",
+    "date-fns": "^3.3.1",
+    "jose": "^5.2.0",
+    "next": "14.1.0",
+    "playwright": "^1.41.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.10.4",
+    "resend": "^3.2.0",
+    "square": "^35.0.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.1.0",
+    "eslint-config-prettier": "^9.1.0",
+    "postcss": "^8.4.33",
+    "prettier": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "prisma": "^5.8.0",
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

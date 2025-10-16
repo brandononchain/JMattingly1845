@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+
+  * {
+    @apply border-white/10;
+  }
+  
+  body {
+    @apply bg-slate-950 text-white;
+    font-family: var(--font-inter);
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Custom scrollbar for webkit */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-white/5 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/20 rounded-full hover:bg-white/30;
+  }
+}
+
+/* Tremor dark theme overrides */
+.tremor-Card-root {
+  @apply bg-transparent border-0 shadow-none;
+}
+
+.tremor-Title-root {
+  @apply text-white font-semibold;
+}
+
+.tremor-Metric-root {
+  @apply text-white font-bold;
+}
+
+.tremor-Text-root {
+  @apply text-slate-300;
+}
+
+.tremor-Badge-root {
+  @apply backdrop-blur-sm border-0;
+}
+
+.tremor-Table-root {
+  @apply bg-transparent;
+}
+
+.tremor-TableRow-root {
+  @apply border-white/5;
+}
+
+.tremor-TableHead-root {
+  @apply bg-transparent;
+}
+
+.tremor-TableHeaderCell-root {
+  @apply text-slate-400 font-semibold;
+}
+
+.tremor-TableCell-root {
+  @apply text-slate-300;
+}
+
+.tremor-Select-root {
+  @apply backdrop-blur-sm;
+}
+
+.tremor-ProgressBar-root {
+  @apply bg-white/10;
+}
+
+.tremor-BarList-root {
+  @apply space-y-3;
+}
+
+.tremor-BarListBar-root {
+  @apply bg-white/10 rounded-lg;
+}
+
+/* Chart styling for perfect color blending */
+.tremor-AreaChart-root .recharts-area,
+.tremor-LineChart-root .recharts-area {
+  fill-opacity: 0.2;
+}
+
+.tremor-AreaChart-root .recharts-line,
+.tremor-LineChart-root .recharts-line {
+  stroke-width: 3;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.tremor-BarChart-root .recharts-bar {
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.tremor-Chart-root .recharts-cartesian-axis-tick-value {
+  @apply fill-slate-500 text-xs font-medium;
+}
+
+.tremor-Chart-root .recharts-cartesian-grid line {
+  @apply stroke-white/5;
+}
+
+.tremor-Chart-root .recharts-tooltip-wrapper {
+  @apply rounded-xl;
+}
+
+/* Emerald chart color */
+.tremor-AreaChart-root .recharts-area[fill*="emerald"],
+.tremor-LineChart-root .recharts-line[stroke*="emerald"] {
+  stroke: #10b981;
+}
+
+.tremor-AreaChart-root .recharts-area[fill*="emerald"] {
+  fill: url(#emeraldGradient);
+}
+
+/* Cyan chart color */
+.tremor-BarChart-root .recharts-bar[fill*="cyan"] {
+  fill: #06b6d4;
+}
+
+/* Blue chart color */
+.tremor-LineChart-root .recharts-line[stroke*="blue"] {
+  stroke: #3b82f6;
+}
+
+/* Purple chart color */
+.tremor-BarChart-root .recharts-bar[fill*="purple"] {
+  fill: #a855f7;
+}
+
+/* Gradient definitions */
+@supports (background: paint(id)) {
+  :root {
+    --emerald-gradient: linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(16, 185, 129, 0.05) 100%);
+    --cyan-gradient: linear-gradient(180deg, rgba(6, 182, 212, 0.3) 0%, rgba(6, 182, 212, 0.05) 100%);
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "buildCommand": "prisma generate && next build",
+  "framework": "nextjs",
+  "installCommand": "npm install",
+  "crons": [
+    {
+      "path": "/api/send-report?period=daily",
+      "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/send-report?period=weekly",
+      "schedule": "0 13 * * 1"
+    },
+    {
+      "path": "/api/send-report?period=monthly",
+      "schedule": "0 13 1 * *"
+    },
+    {
+      "path": "/api/refresh-views",
+      "schedule": "0 6 * * *"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "TIMEZONE": "@timezone",
+    "SHOPIFY_STORE_DOMAIN": "@shopify_store_domain",
+    "SHOPIFY_ADMIN_ACCESS_TOKEN": "@shopify_admin_access_token",
+    "SHOPIFY_WEBHOOK_SECRET": "@shopify_webhook_secret",
+    "SQUARE_ACCESS_TOKEN": "@square_access_token",
+    "SQUARE_ENV": "@square_env",
+    "SQUARE_LOCATION_ID": "@square_location_id",
+    "SQUARE_WEBHOOK_SECRET": "@square_webhook_secret",
+    "SQUARE_WEBHOOK_URL": "@square_webhook_url",
+    "ANYROAD_API_KEY": "@anyroad_api_key",
+    "ANYROAD_API_URL": "@anyroad_api_url",
+    "ANYROAD_WEBHOOK_SECRET": "@anyroad_webhook_secret",
+    "RESEND_API_KEY": "@resend_api_key",
+    "REPORT_RECIPIENTS": "@report_recipients",
+    "WEBHOOK_SECRET": "@webhook_secret"
+  },
+  "headers": [
+    {
+      "source": "/api/webhooks/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
+}
+

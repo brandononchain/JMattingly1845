@@ -1,0 +1,155 @@
+// J. Mattingly 1845 Analytics - Data Warehouse Schema
+// Dimensional model for multi-channel analytics
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ========================================
+// DIMENSION TABLES
+// ========================================
+
+// Date dimension for time-series analytics
+model DimDate {
+  date      DateTime @id
+  year      Int
+  quarter   Int
+  month     Int
+  day       Int
+  week      Int
+  isWeekend Boolean
+
+  @@map("dim_date")
+}
+
+// Location dimension (stores, venues, etc)
+model DimLocation {
+  id      String @id
+  name    String
+  channel String // shopify | square | anyroad | dtc
+
+  FactOrder FactOrder[]
+
+  @@map("dim_location")
+}
+
+// Channel dimension (sales channels)
+model DimChannel {
+  id   String @id
+  name String // Shopify, Square, AnyRoad
+
+  FactOrder FactOrder[]
+
+  @@map("dim_channel")
+}
+
+// ========================================
+// FACT TABLES
+// ========================================
+
+// Orders fact table - main transactional data
+model FactOrder {
+  id            String   @id @default(cuid())
+  channelId     String
+  locationId    String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  customerHash  String?
+  grossTotal    Decimal  @db.Decimal(14, 2)
+  netTotal      Decimal  @db.Decimal(14, 2)
+  taxTotal      Decimal  @db.Decimal(14, 2)
+  discountTotal Decimal  @db.Decimal(14, 2)
+  refundsTotal  Decimal  @db.Decimal(14, 2)
+  tendersJson   Json?
+  rawJson       Json?
+
+  // Relations
+  channel  DimChannel   @relation(fields: [channelId], references: [id])
+  location DimLocation? @relation(fields: [locationId], references: [id])
+  lines    FactOrderLine[]
+
+  @@index([createdAt, channelId])
+  @@index([customerHash])
+  @@index([channelId])
+  @@index([locationId])
+  @@map("fact_order")
+}
+
+// Order line items - product-level detail
+model FactOrderLine {
+  id           String  @id @default(cuid())
+  orderId      String
+  sku          String?
+  productTitle String
+  category     String?
+  qty          Int
+  lineTotal    Decimal @db.Decimal(14, 2)
+
+  // Relations
+  order FactOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([sku])
+  @@index([category])
+  @@map("fact_order_line")
+}
+
+// Events fact table (AnyRoad experiences, Square appointments)
+model FactEvent {
+  id          String    @id @default(cuid())
+  eventType   String
+  startsAt    DateTime
+  endsAt      DateTime?
+  attendees   Int?
+  revenue     Decimal   @db.Decimal(14, 2)
+  addOnSales  Decimal   @db.Decimal(14, 2)
+  rawJson     Json?
+
+  @@index([startsAt])
+  @@index([eventType])
+  @@map("fact_event")
+}
+
+// ========================================
+// BRIDGE TABLES
+// ========================================
+
+// Customer identity resolution across channels
+model BridgeCustomerIdentity {
+  customerHash       String  @id
+  shopifyCustomerId  String? @unique
+  squareCustomerId   String? @unique
+  anyroadGuestId     String? @unique
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([shopifyCustomerId])
+  @@index([squareCustomerId])
+  @@index([anyroadGuestId])
+  @@map("bridge_customer_identity")
+}
+
+// ========================================
+// OPERATIONAL TABLES
+// ========================================
+
+// Audit trail for data ingestion
+model IngestAudit {
+  id      String   @id @default(cuid())
+  source  String   // shopify | square | anyroad
+  type    String   // order | product | customer | event
+  status  String   // success | failed | partial
+  ts      DateTime @default(now())
+  payload Json?
+  error   String?
+
+  @@index([source, ts])
+  @@index([status])
+  @@index([ts])
+  @@map("ingest_audit")
+}
