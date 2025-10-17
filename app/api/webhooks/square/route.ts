@@ -181,7 +181,40 @@ async function handlePaymentWebhook(event: any): Promise<void> {
 
       // Normalize and create order
       const normalized = normalizeOrder(squareOrder);
-      await upsertOrder(normalized);
+      
+      // Upsert order
+      await db.factOrder.upsert({
+        where: { id: externalOrderId },
+        update: {
+          channelId: normalized.channelId,
+          locationId: normalized.locationId,
+          createdAt: normalized.createdAt,
+          updatedAt: new Date(),
+          customerHash: normalized.customerHash,
+          grossTotal: normalized.grossTotal,
+          netTotal: normalized.netTotal,
+          taxTotal: normalized.taxTotal,
+          discountTotal: normalized.discountTotal,
+          refundsTotal: normalized.refundsTotal,
+          tendersJson: normalized.tendersJson,
+          rawJson: normalized.rawJson,
+        },
+        create: {
+          id: externalOrderId,
+          channelId: normalized.channelId,
+          locationId: normalized.locationId,
+          createdAt: normalized.createdAt,
+          updatedAt: new Date(),
+          customerHash: normalized.customerHash,
+          grossTotal: normalized.grossTotal,
+          netTotal: normalized.netTotal,
+          taxTotal: normalized.taxTotal,
+          discountTotal: normalized.discountTotal,
+          refundsTotal: normalized.refundsTotal,
+          tendersJson: normalized.tendersJson,
+          rawJson: normalized.rawJson,
+        },
+      });
       
       existingOrder = await db.factOrder.findUnique({
         where: { id: externalOrderId },
