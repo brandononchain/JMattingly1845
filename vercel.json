@@ -8,14 +8,6 @@
       "schedule": "0 13 * * *"
     },
     {
-      "path": "/api/send-report?period=weekly",
-      "schedule": "0 13 * * 1"
-    },
-    {
-      "path": "/api/send-report?period=monthly",
-      "schedule": "0 13 1 * *"
-    },
-    {
       "path": "/api/refresh-views",
       "schedule": "0 6 * * *"
     }
