@@ -13,22 +13,14 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-// Prisma Client configuration
-const prismaClientConfig = {
-  log: process.env.NODE_ENV === 'development' 
-    ? ['query', 'error', 'warn']
-    : ['error'],
-  
-  // Connection pool settings for serverless
+// Create or reuse Prisma Client instance
+export const db = global.prisma || new PrismaClient({
   datasources: {
     db: {
       url: process.env.DATABASE_URL,
     },
   },
-};
-
-// Create or reuse Prisma Client instance
-export const db = global.prisma || new PrismaClient(prismaClientConfig);
+});
 
 // In development, store instance globally to prevent multiple clients
 if (process.env.NODE_ENV !== 'production') {
