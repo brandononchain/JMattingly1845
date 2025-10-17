@@ -353,16 +353,17 @@ async function handleOrderWebhook(event: any): Promise<void> {
     }
 
     // Fetch payments for this order
-    const { payments } = await squareClient.paymentsApi.listPayments(
+    const paymentsResponse = await squareClient.paymentsApi.listPayments(
       undefined,
       undefined,
       orderId
     );
+    const payments = paymentsResponse.result?.payments || [];
 
     // Reconcile payments
     const paymentsMap = reconcilePaymentsToOrders(
       [squareOrder],
-      payments || []
+      payments
     );
 
     // Normalize order
