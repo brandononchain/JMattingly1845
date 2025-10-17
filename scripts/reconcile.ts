@@ -476,7 +476,7 @@ async function main() {
           results,
           orphanedLineItems: orphanedCount,
           duplicates,
-        },
+        } as any,
       },
     });
 
