@@ -363,7 +363,7 @@ async function handleOrderWebhook(event: any): Promise<void> {
     // Reconcile payments
     const paymentsMap = reconcilePaymentsToOrders(
       [squareOrder],
-      payments
+      payments as any[]
     );
 
     // Normalize order
