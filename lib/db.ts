@@ -65,7 +65,7 @@ export async function executeRawQuery<T = unknown>(
 
 // Transaction helper
 export async function runTransaction<T>(
-  callback: (tx: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>) => Promise<T>
+  callback: (tx: any) => Promise<T>
 ): Promise<T> {
   try {
     return await db.$transaction(callback);
