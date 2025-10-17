@@ -48,7 +48,7 @@ async function saveCheckpoint(checkpoint: Checkpoint): Promise<void> {
       source: 'anyroad',
       type: 'backfill_checkpoint',
       status: 'success',
-      payload: checkpoint,
+      payload: checkpoint as any,
     },
   });
 }

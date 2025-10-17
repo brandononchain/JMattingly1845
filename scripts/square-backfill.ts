@@ -53,7 +53,7 @@ async function saveCheckpoint(checkpoint: Checkpoint): Promise<void> {
       source: 'square',
       type: 'backfill_checkpoint',
       status: 'success',
-      payload: checkpoint,
+      payload: checkpoint as any,
     },
   });
 }
