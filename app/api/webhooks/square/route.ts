@@ -283,15 +283,17 @@ async function handlePaymentWebhook(event: any): Promise<void> {
       customerHash = hashPii(payment.buyer_email_address);
 
       // Update customer identity
-      await db.bridgeCustomerIdentity.upsert({
-        where: { customerHash },
-        update: {
-          updatedAt: new Date(),
-        },
-        create: {
-          customerHash,
-        },
-      });
+      if (customerHash) {
+        await db.bridgeCustomerIdentity.upsert({
+          where: { customerHash },
+          update: {
+            updatedAt: new Date(),
+          },
+          create: {
+            customerHash,
+          },
+        });
+      }
     }
 
     // Update order
